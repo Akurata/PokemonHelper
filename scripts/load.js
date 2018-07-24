@@ -12,6 +12,16 @@ var typeChart = fetch('/typechart', {
 });
 
 
+function icon(types) {
+  //http://www.tech-recipes.com/rx/39976/photoshop-scale-pixel-art-without-losing-quality/
+  var s = "";
+  types.forEach((type) => {
+    s += "<img src=\"../images/new/test/" + type + ".png\" class=\"icon\"/>"
+  });
+  return s;
+}
+
+
 function getInfo(name) {
   document.getElementById("pokemon_input").value = name;
   clearChildren(document.getElementById("dropdown"));
@@ -32,34 +42,28 @@ function getInfo(name) {
 function fillPokemon(data) {
   var body = document.getElementById("pokemon_display");
   var typing = typeCheck(data.types);
-  console.log(typing)
 
   body.children[0].innerHTML = data.names.en;
-  body.children[1].innerHTML = "<strong>Type: </strong>" + data.types.join(', ');
+  body.children[1].innerHTML = "<strong>Type: </strong>" + icon(data.types);
 
-  //2: Very Weak to
-  //3: Weak to
-  //4: Resistant to
-  //5: Very Resistant to
-  //6: Immune to
   if(typing.veryWeakTo.length != 0) {
-    body.children[2].innerHTML = "<strong>Very Weak to: </strong>" + typing.veryWeakTo.join(', ');
+    body.children[2].innerHTML = "<strong>Very Weak to (4x): </strong><span class=\"type\">" + typing.veryWeakTo.join(', ').toUpperCase() + "</span>";
   }
 
   if(typing.weakTo.length != 0) {
-    body.children[3].innerHTML = "<strong>Weak to: </strong>" + typing.weakTo.join(', ');
+    body.children[3].innerHTML = "<strong>Weak to (2x): </strong>" + icon(typing.weakTo);
   }
 
   if(typing.resist.length != 0) {
-    body.children[4].innerHTML = "<strong>Resistant to: </strong>" + typing.resist.join(', ');
+    body.children[4].innerHTML = "<strong>Resistant to (1/2x): </strong>" + icon(typing.resist);
   }
 
   if(typing.veryResist.length != 0) {
-    body.children[5].innerHTML = "<strong>Very Resistant to: </strong>" + typing.veryResist.join(', ');
+    body.children[5].innerHTML = "<strong>Very Resistant to (1/4x): </strong>" + icon(typing.veryResist);
   }
 
   if(typing.immuneTo.length != 0) {
-    body.children[6].innerHTML = "<strong>Immune to: </strong>" + typing.immuneTo.join(', ');
+    body.children[6].innerHTML = "<strong>Immune to (0x): </strong>" + icon(typing.immuneTo);
   }
 
 
@@ -83,7 +87,9 @@ function typeCheck(types) {
     typeChart[types[1]].weakTo.forEach((item, index) => {
 
       if(overall.weakTo.indexOf(item) == -1) {
-        overall.weakTo.push(item);
+        if(overall.immuneTo.indexOf(item) == -1) { //Immunity check
+          overall.weakTo.push(item);
+        }
       }else {
         overall.weakTo.splice(index, 1);
         overall.veryWeakTo.push(item);
@@ -96,7 +102,12 @@ function typeCheck(types) {
       //Filter for uniqueness
       if(overall.resist.indexOf(item) == -1) {
         if(overall.immuneTo.indexOf(item) == -1) { //Immunity check
-          overall.resist.push(item);
+          if(overall.weakTo.indexOf(item) == -1) {
+            overall.resist.push(item);
+          }else {
+            overall.weakTo.splice(overall.weakTo.indexOf(item), 1);
+          }
+
         }
       }else {
         overall.resist.splice(overall.resist.indexOf(item), 1);
@@ -104,9 +115,7 @@ function typeCheck(types) {
       }
 
       //Check if weakness is being resisted
-      if(overall.weakTo.indexOf(item) != -1) {
-        overall.weakTo.splice(overall.weakTo.indexOf(item), 1);
-      }
+
 
     });
   }

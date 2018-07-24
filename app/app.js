@@ -1,6 +1,7 @@
 const express = require('express');
 var app = express();
 
+var favicon = require('serve-favicon');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -8,8 +9,10 @@ var _ = require('underscore');
 
 var pokedex = require('oakdex-pokedex');
 
+app.use(favicon(path.resolve('../images/favicon.ico')));
 app.use(express.static(path.resolve('../')));
 app.use(bodyParser.json());
+
 
 var typeChart = fs.readFile('types.json', 'utf-8', (err, data) => {
   if(err) throw err;

@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 #container {
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
   width: 70%;
@@ -8,6 +12,7 @@
 }
 input[type=text] {
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
+  font-size: 20px;
   float:right;
 }
 
@@ -28,6 +33,10 @@ ul {
   width: 70%;
   margin: auto;
   overflow: visible;
+  top: 30px;
+}
+#in label {
+  float: right;
 }
 
 #dropdown, #pokemon_input {
@@ -48,6 +57,7 @@ ul {
   border: 1px solid lightgrey;
   padding: 10px;
   cursor: pointer;
+  background-color: white;
 }
 .suggest:hover {
   color: #70A6FF;
@@ -56,14 +66,90 @@ ul {
 
 #pokemon_display {
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
-  width: 100%;
+  width: 80%;
+  display: block;
   margin: auto;
-  margin-top: 50px;
-  float:left;
+  margin-top: 100px;
+
 }
 #pokemon_display h1 {
-  text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+  text-shadow: -1px 1px 1px rgba(0,0,0,0.4);
+}
+#pokemon_display strong {
+  font-size: 23px;
+}
+#veryWeakTo strong {
+  color:  #006699;
+}
+#weakTo strong {
+  color: #006600;
+}
+#resistTo strong {
+  color: #ff0000;
+}
+#veryResistantTo strong {
+  color: #660066;
 }
 p {
   font-size: 20px;
+}
+
+@font-face {
+    font-family: 'pixeledregular';
+    src: url('../images/pixeled-webfont.woff2') format('woff2'),
+         url('../images/pixeled-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.type {
+  font-family: pixeledregular;
+  font-size: 15px;
+  color: white;
+  text-shadow: 1px 1px 1px #808080;
+
+  background-color: blue;
+  vertical-align: middle;
+
+  @include step1( 2px, black );
+}
+/*Scss or something*/
+@mixin step1( $width, $color ) {
+  box-shadow:
+    $width 0 $color,
+    -$width 0 $color,
+    0 (-$width) $color,
+    0 $width $color;
+  margin: $width auto;
+}
+
+@mixin other( $width, $color, $bgcolor ) {
+  box-shadow:
+    4*$width 0 $bgcolor,
+    -4*$width 0 $bgcolor,
+    0 (-4*$width) $bgcolor,
+    0 4*$width $bgcolor,
+    $width 0 0 2*$width $bgcolor,
+    -$width 0 0 2*$width $bgcolor,
+    0 (-$width) 0 2*$width $bgcolor,
+    0 $width 0 2*$width $bgcolor,
+    5*$width 0 $color,
+    -5*$width 0 $color,
+    0 (-5*$width) $color,
+    0 5*$width $color,
+    0 0 0 3*$width $color,
+    0 2*$width 0 2*$width $color,
+    0 (-2*$width) 0 2*$width $color,
+    2*$width 0 0 2*$width $color,
+    (-2*$width) 0 0 2*$width $color;
+    margin: 5*$width auto;
+}
+
+.icon {
+
+  vertical-align: sub;
+  margin: 0px 5px;
+  -webkit-filter: drop-shadow(-1px 1px 1px rgba(0,0,0,0.4));
+  filter: drop-shadow(-1px 1px 1px rgba(0,0,0,0.4));
 }

@@ -46,7 +46,7 @@ document.addEventListener('keyup', (event) => {
   if(event.key === 'Escape') {
     clearChildren(obj.children[1]);
   }else if(event.key === 'Enter') {
-    getInfo(document.getElementById("pokemon_input").value);
+    getInfo(document.getElementById("pokemon_input").value.substring(0, 1).toUpperCase() + document.getElementById("pokemon_input").value.substring(1).toLowerCase());
   }else {
     input(document.getElementById("in"))
   }
