@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pokemon Helper App</title>
+    <meta content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="../scripts/search.js"></script>
+    <script type="text/javascript" src="../scripts/load.js"></script>
+    <link rel="stylesheet" type="text/css" href="../view/style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="in">
+        <label>Pokemon: <input id="pokemon_input" type="text"/></label>
+        <ul id="dropdown" onClick="getInfo(event.target.innerHTML)"><li class="suggest"></li></ul>
+      </div>
+      <br/>
+      <div id="pokemon_display">
+        <h1 id="name"></h1>
+        <p id="type"></p>
+        <p id="veryWeakTo"></p>
+        <p id="weakTo"></p>
+        <p id="resistTo"></p>
+        <p id="veryResistantTo"></p>
+        <p id="immuneTo"></p>
+      </div>
+    </div>
+  </body>
+</html>
