@@ -40,6 +40,9 @@ document.addEventListener('click', (event) => {
   if(event.target.id == 'pokemon_input') {
     input(document.getElementById("in"));
   }
+  if(event.target.classList.value == "variant") {
+    fillVariant(event.target.innerHTML);
+  }
 });
 
 document.addEventListener('keyup', (event) => {

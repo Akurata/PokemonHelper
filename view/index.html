@@ -11,17 +11,22 @@
     <div id="container">
       <div id="in">
         <label>Pokémon: <input id="pokemon_input" type="text"/></label>
-        <ul id="dropdown" onClick="getInfo(event.target.innerHTML)"><li class="suggest"></li></ul>
+        <ul id="dropdown" onClick="getInfo(event.target.innerHTML)"></ul>
       </div>
       <br/>
       <div id="pokemon_display">
-        <h1 id="name"></h1>
+        <div id="name">
+          <h1></h1>
+          <p id="variations"></p>
+          <p id="megaEvolutions"></p>
+        </div>
         <p id="type"></p>
         <p id="veryWeakTo"></p>
         <p id="weakTo"></p>
         <p id="resistTo"></p>
         <p id="veryResistantTo"></p>
         <p id="immuneTo"></p>
+        <p id="abilities"></p>
       </div>
     </div>
   </body>

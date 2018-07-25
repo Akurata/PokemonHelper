@@ -14,6 +14,7 @@ input[type=text] {
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
   font-size: 20px;
   float:right;
+  margin-left: 10px;
 }
 
 label {
@@ -40,15 +41,15 @@ ul {
 }
 
 #dropdown, #pokemon_input {
-  width: 700px
+  width: 650px
 }
 #dropdown {
   top: 37px;
   overflow: visible;
-  z-index: 1000;
   float: right;
   padding-left: 0px;
   padding-right: 8px;
+  z-index: 5;
 }
 .suggest {
   color: #5C5C5C;
@@ -56,17 +57,18 @@ ul {
   font-size: 17px;
   border: 1px solid lightgrey;
   padding: 10px;
-  cursor: pointer;
   background-color: white;
+  z-index: 5;
 }
-.suggest:hover {
+.suggest:hover, .variant:hover, .mega:hover {
+  cursor: pointer;
   color: #70A6FF;
   text-shadow: 0 1px 1px rgba(0,0,0,0.2);
 }
 
 #pokemon_display {
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
-  width: 80%;
+  width: 90%;
   display: block;
   margin: auto;
   margin-top: 100px;
@@ -94,17 +96,19 @@ p {
   font-size: 20px;
 }
 
-@font-face {
-    font-family: 'pixeledregular';
-    src: url('../images/pixeled-webfont.woff2') format('woff2'),
-         url('../images/pixeled-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+h1 {
+  font-size: 50px;
+}
 
+#pokemon_display p {
+  margin-left: 2%;
+}
+
+#pokemon_display strong {
+  margin-bottom: 10px;;
 }
 
 .type {
-  font-family: pixeledregular;
   font-size: 15px;
   color: white;
   text-shadow: 1px 1px 1px #808080;
@@ -112,44 +116,24 @@ p {
   background-color: blue;
   vertical-align: middle;
 
-  @include step1( 2px, black );
 }
-/*Scss or something*/
-@mixin step1( $width, $color ) {
-  box-shadow:
-    $width 0 $color,
-    -$width 0 $color,
-    0 (-$width) $color,
-    0 $width $color;
-  margin: $width auto;
+img {
+  position: relative;
+  z-index: -1;
 }
 
-@mixin other( $width, $color, $bgcolor ) {
-  box-shadow:
-    4*$width 0 $bgcolor,
-    -4*$width 0 $bgcolor,
-    0 (-4*$width) $bgcolor,
-    0 4*$width $bgcolor,
-    $width 0 0 2*$width $bgcolor,
-    -$width 0 0 2*$width $bgcolor,
-    0 (-$width) 0 2*$width $bgcolor,
-    0 $width 0 2*$width $bgcolor,
-    5*$width 0 $color,
-    -5*$width 0 $color,
-    0 (-5*$width) $color,
-    0 5*$width $color,
-    0 0 0 3*$width $color,
-    0 2*$width 0 2*$width $color,
-    0 (-2*$width) 0 2*$width $color,
-    2*$width 0 0 2*$width $color,
-    (-2*$width) 0 0 2*$width $color;
-    margin: 5*$width auto;
+.main {
+  transform: scale(0.8);
 }
 
-.icon {
-
-  vertical-align: sub;
-  margin: 0px 5px;
+.icon, .main {
+  vertical-align: middle;
+  margin: 10px 5px;
   -webkit-filter: drop-shadow(-1px 1px 1px rgba(0,0,0,0.4));
   filter: drop-shadow(-1px 1px 1px rgba(0,0,0,0.4));
+  z-index: 0;
+}
+
+#abilities ul {
+  list-style-type: circle;
 }
