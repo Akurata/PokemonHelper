@@ -17,6 +17,18 @@ input[type=text] {
   margin-left: 10px;
 }
 
+input[type=button] {
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #008CBA;
+  background: none;
+}
+
+input[type=button]:hover {
+  background-color: #91d4ea;
+  cursor: pointer;
+}
+
 label {
   font-size: 20px;
   vertical-align: baseline;
@@ -76,9 +88,15 @@ ul {
 }
 #pokemon_display h1 {
   text-shadow: -1px 1px 1px rgba(0,0,0,0.4);
+  display: inline-block;
 }
 #pokemon_display strong {
   font-size: 23px;
+}
+#name p {
+  margin: 0px;
+  width: 75%;
+  margin-right: none;
 }
 #veryWeakTo strong {
   color:  #006699;
@@ -100,8 +118,8 @@ h1 {
   font-size: 50px;
 }
 
-#pokemon_display p {
-  margin-left: 2%;
+#pokemon_display p, div {
+  margin: 10px 0px 10px 2%;
 }
 
 #pokemon_display strong {
@@ -117,6 +135,16 @@ h1 {
   vertical-align: middle;
 
 }
+#type {
+  margin-top: 0px;
+}
+
+#sprite {
+  float: right;
+  vertical-align: bottom;
+  /*transform: scale(3);*/
+}
+
 img {
   position: relative;
   z-index: -1;
@@ -136,4 +164,26 @@ img {
 
 #abilities ul {
   list-style-type: circle;
+}
+
+#stats {
+  float: left;
+  width: 525px;
+}
+progress::-webkit-progress-value {background: black}
+
+#stats progress {
+  float: right;
+  margin-left: 10px;
+  width: 400px;
+
+}
+
+#stats label {
+  display: block;
+  text-align: left;
+}
+
+#stats p {
+  text-align: right;
 }

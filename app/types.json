@@ -1,16 +1,16 @@
 {
   "Fairy": {
     "weakTo": ["poison", "steel"],
-    "resist": ["fight", "bug", "dark"],
+    "resist": ["Fighting", "bug", "dark"],
     "immuneTo": ["dragon"]
   },
   "Steel": {
-    "weakTo": ["fire", "fight", "ground"],
+    "weakTo": ["fire", "Fighting", "ground"],
     "resist": ["normal", "grass", "ice", "flying", "psychic", "bug", "rock", "dragon", "steel", "fairy"],
     "immuneTo": ["poison"]
   },
   "Dark": {
-    "weakTo": ["fight", "bug", "fairy"],
+    "weakTo": ["Fighting", "bug", "fairy"],
     "resist": ["dark", "ghost"],
     "immuneTo": ["psychic"]
   },
@@ -22,26 +22,26 @@
   "Ghost": {
     "weakTo": ["ghost", "dark"],
     "resist": ["poison", "bug"],
-    "immuneTo": ["normal", "fight"]
+    "immuneTo": ["normal", "Fighting"]
   },
   "Rock": {
-    "weakTo": ["water", "grass", "fight", "ground", "steel"],
+    "weakTo": ["water", "grass", "Fighting", "ground", "steel"],
     "resist": ["normal", "fire", "poison", "flying"],
     "immuneTo": []
   },
   "Bug": {
     "weakTo": ["fire", "flying", "rock"],
-    "resist": ["grass", "fight", "ground"],
+    "resist": ["grass", "Fighting", "ground"],
     "immuneTo": []
   },
   "Psychic": {
     "weakTo": ["bug", "ghost", "dark"],
-    "resist": ["fight", "poison"],
+    "resist": ["Fighting", "poison"],
     "immuneTo": []
   },
   "Flying": {
     "weakTo": ["electric", "ice", "rock"],
-    "resist": ["grass", "fight", "bug"],
+    "resist": ["grass", "Fighting", "bug"],
     "immuneTo": ["ground"]
   },
   "Ground": {
@@ -51,16 +51,16 @@
   },
   "Poison": {
     "weakTo": ["ground", "psychic"],
-    "resist": ["grass", "fight", "poison", "bug", "fairy"],
+    "resist": ["grass", "Fighting", "poison", "bug", "fairy"],
     "immuneTo": []
   },
-  "Fight": {
+  "Fighting": {
     "weakTo": ["flying", "psychic", "fairy"],
     "resist": ["bug", "rock", "dark"],
     "immuneTo": []
   },
   "Ice": {
-    "weakTo": ["fire", "fight", "rock", "steel"],
+    "weakTo": ["fire", "Fighting", "rock", "steel"],
     "resist": ["ice"],
     "immuneTo": []
   },
@@ -85,7 +85,7 @@
     "immuneTo": []
   },
   "Normal": {
-    "weakTo": ["fight"],
+    "weakTo": ["Fighting"],
     "resist": [],
     "immuneTo": ["ghost"]
   }

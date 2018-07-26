@@ -11,12 +11,14 @@
     <div id="container">
       <div id="in">
         <label>Pokémon: <input id="pokemon_input" type="text"/></label>
-        <ul id="dropdown" onClick="getInfo(event.target.innerHTML)"></ul>
+        <ul id="dropdown"></ul>
+        <input type="button" onClick="back()" value="Back" />
       </div>
       <br/>
       <div id="pokemon_display">
         <div id="name">
           <h1></h1>
+          <img id="sprite" src="" />
           <p id="variations"></p>
           <p id="megaEvolutions"></p>
         </div>
@@ -27,6 +29,15 @@
         <p id="veryResistantTo"></p>
         <p id="immuneTo"></p>
         <p id="abilities"></p>
+        <div id="stats">
+          <label><span></span><progress id="hp" value="0" max="255"></progress></label>
+          <label><span></span><progress id="atk" value="0" max="255"></progress></label>
+          <label><span></span><progress id="def" value="0" max="255"></progress></label>
+          <label><span></span><progress id="sp_atk" value="0" max="255"></progress></label>
+          <label><span></span><progress id="sp_def" value="0" max="255"></progress></label>
+          <label><span></span><progress id="speed" value="0" max="255"></progress></label>
+          <p id="total"></p>
+        </div>
       </div>
     </div>
   </body>
