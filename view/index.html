@@ -7,7 +7,7 @@
     <script type="text/javascript" src="../scripts/load.js"></script>
     <link rel="stylesheet" type="text/css" href="../view/style.css" />
   </head>
-  <body>
+  <body onLoad="save('1').then(getInfo(1));document.getElementById('pokemon_input').value=''">
     <div id="container">
       <div id="in">
         <label>Pokémon: <input id="pokemon_input" type="text"/></label>
@@ -30,12 +30,12 @@
         <p id="immuneTo"></p>
         <p id="abilities"></p>
         <div id="stats">
-          <label><span></span><progress id="hp" value="0" max="255"></progress></label>
-          <label><span></span><progress id="atk" value="0" max="255"></progress></label>
-          <label><span></span><progress id="def" value="0" max="255"></progress></label>
-          <label><span></span><progress id="sp_atk" value="0" max="255"></progress></label>
-          <label><span></span><progress id="sp_def" value="0" max="255"></progress></label>
-          <label><span></span><progress id="speed" value="0" max="255"></progress></label>
+          <label><span></span><progress id="hp" value="0" max="200"></progress></label>
+          <label><span></span><progress id="atk" value="0" max="200"></progress></label>
+          <label><span></span><progress id="def" value="0" max="200"></progress></label>
+          <label><span></span><progress id="sp_atk" value="0" max="200"></progress></label>
+          <label><span></span><progress id="sp_def" value="0" max="200"></progress></label>
+          <label><span></span><progress id="speed" value="0" max="200"></progress></label>
           <p id="total"></p>
         </div>
       </div>

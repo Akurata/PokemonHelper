@@ -23,7 +23,7 @@ function icon(types) {
 function mainicon(types) {
   var s = "";
   types.forEach((type) => {
-    s += "<img src=\"../images/good/test2/Big/" + type + ".gif\" class=\"main\"/>"
+    s += "<img src=\"../images/good/test2/Big/" + type.toLowerCase() + ".gif\" class=\"main\"/>"
   });
   return s;
 }
@@ -64,6 +64,7 @@ function getInfo(name) {
       cookieStr = cookieStr.replace(/=j/ig, "\"")
       allAbilities = JSON.parse("{\"" + cookieStr + "}");
 
+      console.log("TRUE DATA")
       console.log(data);
       this.data = data;
 
@@ -74,7 +75,6 @@ function getInfo(name) {
     });
   });
 }
-
 
 
 function fillPokemon(data, ability) {
@@ -90,11 +90,10 @@ function fillPokemon(data, ability) {
   fill(body.children[1], "Type", data.types, 'mainicon');
   fill(body.children[2], "Very Weak to (4x)", typing.veryWeakTo, 'icon');
   fill(body.children[3], "Weak to (2x)", typing.weakTo, 'icon');
-  fill(body.children[4], "Resistant to (1/2x)", typing.resist, 'icon');
-  fill(body.children[5], "Very Resistant to (1/4x)", typing.veryResist, 'icon');
+  fill(body.children[4], "Resistant to (<sup>1</sup>&frasl;<sub>2x</sub>)", typing.resist, 'icon');
+  fill(body.children[5], "Very Resistant to (<sup>1</sup>&frasl;<sub>4x</sub>)", typing.veryResist, 'icon');
   fill(body.children[6], "Immune to (0x)", typing.immuneTo, 'icon');
 
-  console.log(body.children[7])
   clearChildren(body.children[7]);
   body.children[7].innerHTML = "<hr/><strong>Abilities:</strong>";
   body.children[7].appendChild(document.createElement("ul"));
@@ -130,7 +129,7 @@ function fill(element, title, data, type, label, variation) {
     }
     if(data.length != 0) {
       data.forEach((item, index) => {
-        field += "<span class=\"variant " + variation + "\">" + item[label].substring(0, 1).toUpperCase() + item[label].substring(1) + "</span>";
+        field += "<span class=\"variant " + variation + "\">" + item.names.en.substring(0, item.names.en.indexOf(' ') == -1 ? item.names.en.length : item.names.en.indexOf(' ')) + "</span>";
         if(index != data.length - 1) {
           field += ", "
         }
@@ -143,27 +142,28 @@ function fill(element, title, data, type, label, variation) {
 }
 
 function fillVariant(list, name) {
-  var returnData = this.data;
+  var returnData = JSON.parse(JSON.stringify(data));
 
   if(list[1] == "form") {
-    var variant = data.variations[data.variations.map((e) => {return e.image_suffix}).indexOf(name)];
+    console.log(toProper(name))
+    var variant = data.variations[data.variations.map((e) => {return e.names.en.substring(0, e.names.en.indexOf(' ') == -1 ? e.names.en.length : e.names.en.indexOf(' '))}).indexOf(toProper(name))];
     console.log(variant)
-    returnData.names.en = variant.image_suffix.substring(0, 1).toUpperCase() + variant.image_suffix.substring(1).toLowerCase() + " " + data.names.en;
+    returnData.names.en = toProper(name) + " " + data.names.en;
     returnData.types = variant.types;
     if(variant.abilities) {
       returnData.abilities = variant.abilities;
-    }else {
-      //returnData.abilities = {returnData.abilities};
     }
-    returnData.variations = [];
+    returnData.variations = data.variations;
     returnData.mega_evolutions = [];
     returnData.base_stats = variant.base_stats;
     returnData.image_suffix = variant.image_suffix;
 
     console.log(returnData);
-    fillPokemon(returnData, allAbilities.Ability);
-  }else {
-    var mega = data.mega_evolutions[data.mega_evolutions.map((e) => {return e.mega_stone}).indexOf(name)];
+    console.log(this.data)
+    save(this.data.names.en).then(fillPokemon(returnData, allAbilities.Ability));
+  }else { //It's gotta be a mega
+    console.log(toProper(name));
+    var mega = data.mega_evolutions[data.mega_evolutions.map((e) => {return e.mega_stone}).indexOf(toProper(name))];
 
     returnData.names.en  = "Mega " + data.names.en;
     returnData.types = mega.types;
@@ -177,35 +177,35 @@ function fillVariant(list, name) {
       returnData.image_suffix = 'mega';
     }
 
-    console.log(mega)
-    fillPokemon(returnData, allAbilities['MegaAbility']);
+    console.log(returnData)
+    save(data.names.en).then(fillPokemon(returnData, allAbilities['MegaAbility']));
   }
-
 }
 
-
 function fillStats(data, body) {
-  var stat_total = data.base_stats.hp + data.base_stats.atk + data.base_stats.def + data.base_stats.sp_atk + data.base_stats.sp_def + data.base_stats.speed;
+  if(data.base_stats) {
+    var stat_total = data.base_stats.hp + data.base_stats.atk + data.base_stats.def + data.base_stats.sp_atk + data.base_stats.sp_def + data.base_stats.speed;
 
-  body.children[0].children[0].innerHTML = "<strong>HP:</strong> " + data.base_stats.hp;
-    body.children[0].children[1].value = data.base_stats.hp;
+    body.children[0].children[0].innerHTML = "<strong>HP:</strong> " + data.base_stats.hp;
+      body.children[0].children[1].value = data.base_stats.hp;
 
-  body.children[1].children[0].innerHTML = "<strong>ATK:</strong> " + data.base_stats.atk;
-    body.children[1].children[1].value = data.base_stats.atk;
+    body.children[1].children[0].innerHTML = "<strong>ATK:</strong> " + data.base_stats.atk;
+      body.children[1].children[1].value = data.base_stats.atk;
 
-  body.children[2].children[0].innerHTML = "<strong>DEF:</strong> " + data.base_stats.def;
-    body.children[2].children[1].value = data.base_stats.def;
+    body.children[2].children[0].innerHTML = "<strong>DEF:</strong> " + data.base_stats.def;
+      body.children[2].children[1].value = data.base_stats.def;
 
-  body.children[3].children[0].innerHTML = "<strong>SpAtk:</strong> " + data.base_stats.sp_atk;
-    body.children[3].children[1].value = data.base_stats.sp_atk;
+    body.children[3].children[0].innerHTML = "<strong>SpAtk:</strong> " + data.base_stats.sp_atk;
+      body.children[3].children[1].value = data.base_stats.sp_atk;
 
-  body.children[4].children[0].innerHTML = "<strong>SpDef:</strong> " + data.base_stats.sp_def;
-    body.children[4].children[1].value = data.base_stats.sp_def;
+    body.children[4].children[0].innerHTML = "<strong>SpDef:</strong> " + data.base_stats.sp_def;
+      body.children[4].children[1].value = data.base_stats.sp_def;
 
-  body.children[5].children[0].innerHTML = "<strong>Speed:</strong> " + data.base_stats.speed;
-    body.children[5].children[1].value = data.base_stats.def;
+    body.children[5].children[0].innerHTML = "<strong>Speed:</strong> " + data.base_stats.speed;
+      body.children[5].children[1].value = data.base_stats.speed;
 
-  document.getElementById("total").innerHTML = "<strong>Total:</strong> " + stat_total;
+    document.getElementById("total").innerHTML = "<strong>Total:</strong> " + stat_total;
+  }
 }
 
 function typeCheck(types) {

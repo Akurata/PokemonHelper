@@ -2,6 +2,7 @@ html {
   overflow-y: scroll;
 }
 
+
 #container {
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
   width: 70%;
@@ -72,6 +73,7 @@ ul {
   background-color: white;
   z-index: 5;
 }
+
 .suggest:hover, .variant:hover, .mega:hover {
   cursor: pointer;
   color: #70A6FF;
@@ -96,7 +98,7 @@ ul {
 #name p {
   margin: 0px;
   width: 75%;
-  margin-right: none;
+  margin-right: 0px;
 }
 #veryWeakTo strong {
   color:  #006699;
@@ -139,6 +141,11 @@ h1 {
   margin-top: 0px;
 }
 
+#type, #veryWeakTo, #weakTo, #resistTo, #veryResistantTo, #immuneTo {
+  position: relative;
+  z-index: -1;
+}
+
 #sprite {
   float: right;
   vertical-align: bottom;
@@ -162,13 +169,13 @@ img {
   z-index: 0;
 }
 
-#abilities ul {
+#abilities li {
   list-style-type: circle;
 }
 
 #stats {
   float: left;
-  width: 525px;
+  width: 550px;
 }
 progress::-webkit-progress-value {background: black}
 

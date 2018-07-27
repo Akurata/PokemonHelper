@@ -35,21 +35,35 @@ function input(obj, event) {
 
 var memory = [];
 function back() {
-  if(memory.length > 1) {
-    memory.pop();
-    getInfo(memory[memory.length-1]);
+  if(memory.length > 0) {
+    getInfo(memory.pop());
   }
   console.log(memory);
 }
 
 function save(name) {
-  memory.push(name);
-  console.log(memory);
+  if(name.indexOf(' ') != -1) {
+    name = name.substring(name.lastIndexOf(' ') + 1);
+  }
+  if(memory[memory.length-1] !== name) {
+    memory.push(name);
+  }
+  console.log(memory)
   return new Promise((resolve, reject) => {
-    resolve();
+    resolve(name);
   });
 }
 
+function toProper(s) {
+  var string = s.split('');
+  string[0] = string[0].toUpperCase();
+  for(var i = 1; i < string.length; i++) {
+    if(string[i] == ' ' || string[i] == '-') {
+      string[i+1] = string[i+1].toUpperCase();
+    }
+  }
+  return string.join('');
+}
 
 document.addEventListener('click', (event) => {
   if(event.target.classList.value === "suggest") {
@@ -67,13 +81,12 @@ document.addEventListener('click', (event) => {
 
 document.addEventListener('keyup', (event) => {
   if(event.key === 'Escape') {
-    clearChildren(obj.children[1]);
+    clearChildren(document.getElementById("dropdown"));
   }else if(event.key === 'Enter') {
-    var search = document.getElementById("pokemon_input").value.substring(0, 1).toUpperCase() + document.getElementById("pokemon_input").value.substring(1).toLowerCase();
+    var search = toProper(document.getElementById("pokemon_input").value);
     memory.push(search);
-    getInfo(search);
+    save(search).then(getInfo(search));
   }else {
     input(document.getElementById("in"))
   }
-
 });

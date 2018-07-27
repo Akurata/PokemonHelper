@@ -1,6 +1,15 @@
 
 Known Bugged Interactions:
-- Unknown as a Pokemon and searching unknown + variants
-  > Doesn't appear in search
+- Unknown as a Pokemon and searching unknown + variants. Doesn't appear in search.
 
-- Lucario is missing mega evolution data, replaced with venusaur for some reason
+Missing Mega Evolutions for:
+  - Gardevoir
+  - Sharpedo
+  - Latias
+  - Latios
+  - Rayquaza
+  - Lucario
+
+Primal Variations Missing:
+  - Groudon
+  - Kyogre
