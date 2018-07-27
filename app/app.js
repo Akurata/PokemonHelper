@@ -65,10 +65,12 @@ app.get('/pokemon/:pokemon', (req, res) => {
             res.cookie("Ability", abi);
             res.cookie("MegaAbility", megaAbi);
             res.send(item);
+            res.end();
           });
         }else {
           res.cookie("Ability", abi);
           res.send(item);
+          res.end();
         }
       })
     }else {
