@@ -1,6 +1,12 @@
 
 Known Bugged Interactions:
-- Unknown as a Pokemon and searching unknown + variants. Doesn't appear in search.
+- Unown variants don't appear in variants.
+- Arceus variation forms are missing sprites.
+- Arceus variation names are bugged.
+- Darmanitan + Zen mode has broken type declaration.
+  - Clicking a variant multiple times will change the type displays.
+  - Any variant, not just double types.
+- Type checking algorithm in general is bugged.
 
 Missing Mega Evolutions for:
   - Gardevoir
@@ -9,7 +15,5 @@ Missing Mega Evolutions for:
   - Latios
   - Rayquaza
   - Lucario
-
-Primal Variations Missing:
-  - Groudon
-  - Kyogre
+  - Groudon (Primal)
+  - Kyogre (Primal)
