@@ -1,21 +1,9 @@
 
-var typeChart = fetch('/typechart', {
-  headers: {
-    "Accept": "application/json"
-  },
-  method: "GET"
-}).then((res) => {
-  res.json().then((data) => {
-    typeChart = data;
-  })
-});
-
-
 function icon(types) {
   //http://www.tech-recipes.com/rx/39976/photoshop-scale-pixel-art-without-losing-quality/
   var s = "";
   types.forEach((type) => {
-    s += "<img src=\"../images/good/test2/" + type + ".png\" class=\"icon\"/>"
+    s += "<img src=\"../images/good/test2/" + type + ".png\" class=\"icon\"alt=\"" + type + "\"/>"
   });
   return s;
 }
@@ -23,11 +11,10 @@ function icon(types) {
 function mainicon(types) {
   var s = "";
   types.forEach((type) => {
-    s += "<img src=\"../images/good/test2/Big/" + type.toLowerCase() + ".gif\" class=\"main\"/>"
+    s += "<img src=\"../images/good/test2/Big/" + type.toLowerCase() + ".gif\" class=\"main\" alt=\"" + type + "\"/>"
   });
   return s;
 }
-
 
 function setSprite(data) {
   var id = data.national_id.toString();
@@ -36,19 +23,27 @@ function setSprite(data) {
   }else if(id.length == 2) {
     id = "0" + id;
   }
-
   var src = "../images/sprites/" + id;
   if(data.image_suffix) src += "-" + data.image_suffix;
   src += ".png";
+  document.getElementById("sprite").alt = data.names.en;
   document.getElementById("sprite").src = src;
 }
 
-
+var wait = {
+  start: function() {
+    document.getElementById("pokemon_display").classList.add("overlay")
+  },
+  stop: function() {
+      document.getElementById("pokemon_display").classList.remove("overlay");
+  }
+}
 
 var data = {};
 var allAbilities;
 
 function getInfo(name) {
+  wait.start();
   document.getElementById("pokemon_input").value = name;
   clearChildren(document.getElementById("dropdown"));
 
@@ -61,14 +56,22 @@ function getInfo(name) {
   }).then((res) => {
     res.json().then((data) => {
       var cookieStr = decodeURIComponent(document.cookie).replace(/; /g, ",\"");
-      cookieStr = cookieStr.replace(/=j/ig, "\"")
-      allAbilities = JSON.parse("{\"" + cookieStr + "}");
-
-      console.log("TRUE DATA")
-      console.log(data);
+      //Parse cookie in firefox
+      if(typeof InstallTrigger !== 'undefined') cookieStr = cookieStr.substring(cookieStr.indexOf(",") + 1).replace(/=j/ig, "\"");
+      //Parse cookie in chrome
+      if(!!window.chrome && !!window.chrome.webstore) cookieStr = "\"" + cookieStr.replace(/=j/ig, "\"");
+      allAbilities = JSON.parse("{" + cookieStr + "}");
       this.data = data;
-
-      fillPokemon(this.data, allAbilities['Ability'])
+      if(this.data.mega_evolutions.length != 0) {
+        this.data.mega_evolutions.forEach((mega) => {
+          mega.names = {};
+          mega.names.en = mega.mega_stone;
+        });
+      }
+      console.log(data);
+      fillPokemon(this.data, allAbilities['Ability']);
+    }).then(() => {
+      wait.stop();
     }).catch((err) => {
       console.log(err)
       console.log("Cannot get: " + name);
@@ -100,7 +103,7 @@ function fillPokemon(data, ability) {
   ability.forEach((ab, i) => {
     var temp = document.createElement("li");
     temp.innerHTML = ab; //.replace(/[\[\]"]/ig, "")
-    body.children[7].children[1].appendChild(temp);
+    body.children[7].children[2].appendChild(temp);
   });
   body.children[7].innerHTML += "<hr/>";
 
@@ -129,7 +132,7 @@ function fill(element, title, data, type, label, variation) {
     }
     if(data.length != 0) {
       data.forEach((item, index) => {
-        field += "<span class=\"variant " + variation + "\">" + item.names.en.substring(0, item.names.en.indexOf(' ') == -1 ? item.names.en.length : item.names.en.indexOf(' ')) + "</span>";
+        field += "<span class=\"variant " + variation + "\">" + item.names.en + "</span>";
         if(index != data.length - 1) {
           field += ", "
         }
@@ -145,10 +148,9 @@ function fillVariant(list, name) {
   var returnData = JSON.parse(JSON.stringify(data));
 
   if(list[1] == "form") {
-    console.log(toProper(name))
-    var variant = data.variations[data.variations.map((e) => {return e.names.en.substring(0, e.names.en.indexOf(' ') == -1 ? e.names.en.length : e.names.en.indexOf(' '))}).indexOf(toProper(name))];
+    var variant = data.variations[data.variations.map((e) => {return e.names.en}).indexOf(toProper(name))];
     console.log(variant)
-    returnData.names.en = toProper(name) + " " + data.names.en;
+    returnData.names.en = toProper(name);
     returnData.types = variant.types;
     if(variant.abilities) {
       returnData.abilities = variant.abilities;
@@ -157,27 +159,23 @@ function fillVariant(list, name) {
     returnData.mega_evolutions = [];
     returnData.base_stats = variant.base_stats;
     returnData.image_suffix = variant.image_suffix;
-
-    console.log(returnData);
-    console.log(this.data)
+    //console.log(returnData);
     save(this.data.names.en).then(fillPokemon(returnData, allAbilities.Ability));
   }else { //It's gotta be a mega
-    console.log(toProper(name));
     var mega = data.mega_evolutions[data.mega_evolutions.map((e) => {return e.mega_stone}).indexOf(toProper(name))];
 
     returnData.names.en  = "Mega " + data.names.en;
     returnData.types = mega.types;
     returnData.abilities = mega.ability;
     returnData.variations = [];
-    returnData.mega_evolutions = [];
+    returnData.mega_evolutions = data.mega_evolutions;
     returnData.base_stats = mega.base_stats;
     if(mega.image_suffix) {
       returnData.image_suffix = mega.image_suffix;
     }else {
       returnData.image_suffix = 'mega';
     }
-
-    console.log(returnData)
+    //console.log(returnData)
     save(data.names.en).then(fillPokemon(returnData, allAbilities['MegaAbility']));
   }
 }
@@ -219,11 +217,8 @@ function typeCheck(types) {
   overall.weakTo = typeChart[types[0]].weakTo;
   overall.resist = typeChart[types[0]].resist;
   overall.immuneTo = typeChart[types[0]].immuneTo;
-
-  if(types[1] != undefined) {
-
+  if(types[1]) {
     typeChart[types[1]].weakTo.forEach((item, index) => {
-
       if(overall.weakTo.indexOf(item) == -1) {
         if(overall.immuneTo.indexOf(item) == -1) { //Immunity check
           overall.weakTo.push(item);
@@ -232,11 +227,8 @@ function typeCheck(types) {
         overall.weakTo.splice(index, 1);
         overall.veryWeakTo.push(item);
       }
-
     });
-
     typeChart[types[1]].resist.forEach((item, index) => {
-
       //Filter for uniqueness
       if(overall.resist.indexOf(item) == -1) {
         if(overall.immuneTo.indexOf(item) == -1) { //Immunity check
@@ -245,16 +237,11 @@ function typeCheck(types) {
           }else {
             overall.weakTo.splice(overall.weakTo.indexOf(item), 1);
           }
-
         }
       }else {
         overall.resist.splice(overall.resist.indexOf(item), 1);
         overall.veryResist.push(item);
       }
-
-      //Check if weakness is being resisted
-
-
     });
   }
   return overall;

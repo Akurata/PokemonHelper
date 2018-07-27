@@ -1,7 +1,15 @@
 html {
   overflow-y: scroll;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
+.overlay {
+  opacity: 0.2;
+}
 
 #container {
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
@@ -74,8 +82,13 @@ ul {
   z-index: 5;
 }
 
-.suggest:hover, .variant:hover, .mega:hover {
+.suggest:hover,   .variant:hover, .mega:hover {
   cursor: pointer;
+  color: #70A6FF;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+}
+
+.selected {
   color: #70A6FF;
   text-shadow: 0 1px 1px rgba(0,0,0,0.2);
 }
@@ -99,6 +112,9 @@ ul {
   margin: 0px;
   width: 75%;
   margin-right: 0px;
+}
+#megaEvolutions, #variations {
+  margin-left: 0px;
 }
 #veryWeakTo strong {
   color:  #006699;
@@ -170,7 +186,7 @@ img {
 }
 
 #abilities li {
-  list-style-type: circle;
+  list-style: circle outside none;
 }
 
 #stats {

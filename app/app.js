@@ -32,6 +32,23 @@ pokedex.allPokemon((pokemon) => {
 
 pokedex.findAbility("Contrary", (data) => {});
 
+app.get('/data-update', (req, res) => {
+  var obj = {};
+  console.log("start read")
+  fs.readFile(path.resolve('../node_modules/oakdex-pokedex/data/pokemon.json'), 'utf-8', (err, data) => {
+    obj = JSON.parse(data);
+
+    console.log("start write")
+
+    fs.writeFile(path.resolve('../node_modules/oakdex-pokedex/data/pokemon.json'), JSON.stringify(obj), (err) => {
+      if(err) throw err;
+      res.sendFile(path.resolve('../node_modules/oakdex-pokedex/data/pokemon.json'));
+      console.log("done")
+    })
+  })
+
+
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve('../view/index.html'));
