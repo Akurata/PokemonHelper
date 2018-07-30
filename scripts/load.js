@@ -16,16 +16,13 @@ function mainicon(types) {
   return s;
 }
 
+//http://play.pokemonshowdown.com/sprites/xyani/
 function setSprite(data) {
-  var id = data.national_id.toString();
-  if(id.length == 1) {
-    id = "00" + id;
-  }else if(id.length == 2) {
-    id = "0" + id;
-  }
-  var src = "../images/sprites/" + id;
+  //var id = data.national_id.toString();
+  var name = data.names.en.replace(/: /g, '').toLowerCase();
+  var src = "../images/sprites/new/" + name;
   if(data.image_suffix) src += "-" + data.image_suffix;
-  src += ".png";
+  src += ".gif";
   document.getElementById("sprite").alt = data.names.en;
   document.getElementById("sprite").src = src;
 }
@@ -91,24 +88,24 @@ function fillPokemon(data, ability) {
   fill(body.children[0].children[3], "Mega Evolutions", data.mega_evolutions, 'sublabel', 'mega_stone');
 
   fill(body.children[1], "Type", data.types, 'mainicon');
-  fill(body.children[2], "Very Weak to (4x)", typing.veryWeakTo, 'icon');
-  fill(body.children[3], "Weak to (2x)", typing.weakTo, 'icon');
-  fill(body.children[4], "Resistant to (<sup>1</sup>&frasl;<sub>2x</sub>)", typing.resist, 'icon');
-  fill(body.children[5], "Very Resistant to (<sup>1</sup>&frasl;<sub>4x</sub>)", typing.veryResist, 'icon');
-  fill(body.children[6], "Immune to (0x)", typing.immuneTo, 'icon');
+  fill(body.children[2], "Very Weak to (4x)", typing['4x'], 'icon');
+  fill(body.children[3], "Weak to (2x)", typing['2x'], 'icon');
+  fill(body.children[4], "Resistant to (<sup>1</sup>&frasl;<sub>2x</sub>)", typing['0.5x'], 'icon');
+  fill(body.children[5], "Very Resistant to (<sup>1</sup>&frasl;<sub>4x</sub>)", typing['0.25x'], 'icon');
+  fill(body.children[6], "Immune to (0x)", typing['0x'], 'icon');
+  fill(body.children[7], "Damaged Normally By (1x)", typing['1x'], 'icon');
 
-  clearChildren(body.children[7]);
-  body.children[7].innerHTML = "<hr/><strong>Abilities:</strong>";
-  body.children[7].appendChild(document.createElement("ul"));
+  clearChildren(body.children[8]);
+  body.children[8].innerHTML = "<hr/><strong>Abilities:</strong>";
+  body.children[8].appendChild(document.createElement("ul"));
   ability.forEach((ab, i) => {
     var temp = document.createElement("li");
     temp.innerHTML = ab; //.replace(/[\[\]"]/ig, "")
-    body.children[7].children[2].appendChild(temp);
+    body.children[8].children[2].appendChild(temp);
   });
-  body.children[7].innerHTML += "<hr/>";
+  body.children[8].innerHTML += "<hr/>";
 
-  fillStats(data, body.children[8]);
-
+  fillStats(data, body.children[9]);
 }
 
 
@@ -150,7 +147,7 @@ function fillVariant(list, name) {
   if(list[1] == "form") {
     var variant = data.variations[data.variations.map((e) => {return e.names.en}).indexOf(toProper(name))];
     console.log(variant)
-    returnData.names.en = toProper(name);
+    //returnData.names.en = toProper(name);
     returnData.types = variant.types;
     if(variant.abilities) {
       returnData.abilities = variant.abilities;
@@ -158,13 +155,13 @@ function fillVariant(list, name) {
     returnData.variations = data.variations;
     returnData.mega_evolutions = [];
     returnData.base_stats = variant.base_stats;
-    returnData.image_suffix = variant.image_suffix;
+    returnData.image_suffix = variant.image_suffix ? variant.image_suffix : variant.types[0].toLowerCase(); //Maybe I dunno
     //console.log(returnData);
     save(this.data.names.en).then(fillPokemon(returnData, allAbilities.Ability));
   }else { //It's gotta be a mega
     var mega = data.mega_evolutions[data.mega_evolutions.map((e) => {return e.mega_stone}).indexOf(toProper(name))];
 
-    returnData.names.en  = "Mega " + data.names.en;
+    //returnData.names.en  = "Mega " + data.names.en;
     returnData.types = mega.types;
     returnData.abilities = mega.ability;
     returnData.variations = [];
@@ -206,6 +203,9 @@ function fillStats(data, body) {
   }
 }
 
+
+
+/*
 function typeCheck(types) {
   var overall = {
     veryWeakTo: [],
@@ -246,3 +246,4 @@ function typeCheck(types) {
   }
   return overall;
 }
+*/

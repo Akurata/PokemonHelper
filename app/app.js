@@ -9,6 +9,11 @@ var path = require('path');
 var _ = require('underscore');
 var async = require('async');
 
+//TEMP
+var request = require('request');
+var download = require('image-downloader');
+var htmlParser = require('node-html-parser')
+
 var pokedex = require('oakdex-pokedex');
 //var sprites = require('oakdex-pokedex-sprites');
 
@@ -18,7 +23,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 
-var typeChart = fs.readFile('types.json', 'utf-8', (err, data) => {
+var typeChart = fs.readFile('types_test.json', 'utf-8', (err, data) => {
   if(err) throw err;
   typeChart = JSON.parse(data);
 });
@@ -97,6 +102,34 @@ app.get('/pokemon/:pokemon', (req, res) => {
   });
 });
 
+/*
+app.get('/getSprites', (req, res) => {
+  request('http://play.pokemonshowdown.com/sprites/xyani/', {
+    headers: {
+      'accept': 'text/html'
+    },
+    method: "GET"
+  }, (err, r, body) => {
+    console.log("Got Body");
+    var root = htmlParser.parse(body);
+    var doc = root.childNodes[0].childNodes[3].childNodes[3].childNodes;
+    console.log(doc.length)
+    var urls = [];
+    for(var i = 7; i <= 2429; i++) {
+      if(i%2 != 0) {
+        urls.push(doc[i].childNodes[1].childNodes[0].childNodes[0].rawText);
+        console.log(doc[i].childNodes[1].childNodes[0].childNodes[0].rawText + " " + i);
+
+        download.image({url: 'http://play.pokemonshowdown.com/sprites/xyani/' + doc[i].childNodes[1].childNodes[0].childNodes[0].rawText, dest: path.resolve('../images/sprites/new')}).catch((err) => {
+          console.log(err)
+        })
+      }
+    }
+
+    res.send(urls);
+  })
+});
+*/
 
 app.get('/typechart', (req, res) => {
   res.json(typeChart)
