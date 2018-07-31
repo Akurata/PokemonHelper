@@ -98,6 +98,9 @@ function select(key) {
 
 var memory = [];
 function back() {
+  if(document.getElementById("error")) {
+    document.getElementById("error").parentElement.removeChild(document.getElementById("error"));
+  }
   if(memory.length > 1) {
     memory.pop();
     getInfo(memory[memory.length - 1]);

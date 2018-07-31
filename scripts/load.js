@@ -19,7 +19,7 @@ function mainicon(types) {
 //http://play.pokemonshowdown.com/sprites/xyani/
 function setSprite(data) {
   //var id = data.national_id.toString();
-  var name = data.names.en.replace(/: /g, '').toLowerCase();
+  var name = data.names.en.replace(/[^\w\s] /g, '').toLowerCase();
   var src = "../images/sprites/new/" + name;
   if(data.image_suffix) src += "-" + data.image_suffix;
   src += ".gif";
@@ -70,8 +70,14 @@ function getInfo(name) {
     }).then(() => {
       wait.stop();
     }).catch((err) => {
-      console.log(err)
-      console.log("Cannot get: " + name);
+      save(name).then(() => {
+        console.log(err)
+        console.log("Cannot get: " + name);
+        var error = document.createElement("strong");
+        error.innerHTML = "Cannot get: " + name;
+        error.id = "error";
+        document.getElementById("in").children[0].appendChild(error);
+      })
     });
   });
 }
@@ -155,7 +161,7 @@ function fillVariant(list, name) {
     returnData.variations = data.variations;
     returnData.mega_evolutions = [];
     returnData.base_stats = variant.base_stats;
-    returnData.image_suffix = variant.image_suffix ? variant.image_suffix : variant.types[0].toLowerCase(); //Maybe I dunno
+    returnData.image_suffix = variant.image_suffix;
     //console.log(returnData);
     save(this.data.names.en).then(fillPokemon(returnData, allAbilities.Ability));
   }else { //It's gotta be a mega
