@@ -44,8 +44,8 @@ app.get('/data-update', (req, res) => {
     obj = JSON.parse(data);
 
     console.log("start write")
-    obj.Aegislash.variations[1].image_suffix = 'shield';
-    console.log(obj.Aegislash.variations[1])
+    obj.Hoopa.variations[0].image_suffix = 'unbound';
+    console.log(obj.Hoopa.variations[0]);
     fs.writeFile(path.resolve('./node_modules/oakdex-pokedex/data/pokemon.json'), JSON.stringify(obj), (err) => {
       if(err) throw err;
       res.sendFile(path.resolve('./node_modules/oakdex-pokedex/data/pokemon.json'));

@@ -5,6 +5,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  transition: 0.2s ease;
 }
 #error {
   position: absolute;
@@ -127,6 +128,9 @@ ul {
 #megaEvolutions, #variations {
   margin-left: 0px;
   position: relative;
+}
+#evolutions strong, span {
+  font-size: 20px;
 }
 #veryWeakTo strong {
   color:  #006699;

@@ -1,7 +1,6 @@
 
 Known Bugged Interactions:
   - Unown variants don't appear in variants.
-  - Arceus variation names are bugged.
   - Missing Hoopa Unbound variation interaction.
 
 Missing Mega Evolutions for:
@@ -38,6 +37,7 @@ Feature TODOs:
   - Background image/coloring
 
 General TODOs:
+  - Adjust Arceus data to have image suffix.
   - Adding regular form to variation menu/fix back functionality.
   - Include evolution information and linking.
   - Content delivery manager:

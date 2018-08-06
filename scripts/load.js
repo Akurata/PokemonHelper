@@ -87,13 +87,12 @@ function fillPokemon(data, ability) {
   var body = document.getElementById("pokemon_display");
   var typing = typeCheck(data.types);
   setSprite(data);
-  body.children[0].children[0].innerHTML = data.names.en;
+  body.children[0].children[0].innerHTML = (data.prefix ? data.prefix + " ": "") + data.names.en + (data.suffix ? " " + data.suffix : "");
 
   fill(body.children[0].children[2], "Variations", data.variations, 'sublabel', 'image_suffix', 'form');
   fill(body.children[0].children[3], "Mega Evolutions", data.mega_evolutions, 'sublabel', 'mega_stone');
   fill(body.children[0].children[4].children[0], "Evolves To", data.evolutions, 'sublabel', 'to', 'evolution');
   fill(body.children[0].children[4].children[1], "Evolves From", data.evolution_from, 'sublabel', 'evolution_from', 'evolution');
-
 
   fill(body.children[1], "Type", data.types, 'mainicon');
   fill(body.children[2], "Very Weak to (4x)", typing['4x'], 'icon');
@@ -121,7 +120,7 @@ function fillPokemon(data, ability) {
 function fill(element, title, data, type, label, variation) {
   var field = "<strong>" + title + ": </strong>";
   if(data) {
-    if(data !== null && data.length != 0) {
+    if(data != null && data.length != 0) {
       if(type == 'mainicon') {
         field += mainicon(data);
         element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
@@ -137,8 +136,9 @@ function fill(element, title, data, type, label, variation) {
           variation = "";
         }
         if(Array.isArray(data)) {
+          var id = label ? label : data.names.en;
           data.forEach((item, index) => {
-            field += "<span class=\"variant " + variation + "\">" + item[label] + "</span>";
+            field += "<span class=\"variant " + variation + "\">" + (item[label] ? item[label] : item.names.en) + "</span>";
             if(index != data.length - 1) {
               field += ", "
             }
@@ -152,14 +152,21 @@ function fill(element, title, data, type, label, variation) {
     }else {
       element.innerHTML = ""
     }
+  }else {
+    element.innerHTML = ""
   }
 }
 
 function fillVariant(list, name) {
   var returnData = JSON.parse(JSON.stringify(data));
-
   if(list[1] == "form") {
-    var variant = data.variations[data.variations.map((e) => {return e.image_suffix}).indexOf(name)];
+    var variant;
+    if(data.variations.length > 1) {
+      variant = data.variations[data.variations.map((e) => {return e.image_suffix ? e.image_suffix : e.names.en}).indexOf(name)];
+    }else {
+      variant = data.variations[0];
+    }
+
     //returnData.names.en = toProper(name);
     returnData.types = variant.types;
     if(variant.abilities) {
@@ -168,8 +175,12 @@ function fillVariant(list, name) {
     returnData.variations = data.variations;
     returnData.mega_evolutions = [];
     returnData.base_stats = variant.base_stats;
-    returnData.image_suffix = variant.image_suffix;
-    //console.log(variant);
+    returnData.evolution_from = data.names.en;
+    if(variant.image_suffix) {
+      returnData.image_suffix = variant.image_suffix;
+      returnData.suffix = toProper(variant.image_suffix);
+    }
+    console.log(returnData);
     save(this.data.names.en).then(fillPokemon(returnData, allAbilities.Ability));
   }else if(list[1] == "evolution") { //It's an evolution
     save(toProper(name)).then(getInfo(toProper(name)));
@@ -180,13 +191,16 @@ function fillVariant(list, name) {
     returnData.types = mega.types;
     returnData.abilities = mega.ability;
     returnData.variations = [];
-    returnData.mega_evolutions = data.mega_evolutions;
+    returnData.mega_evolutions = [];//data.mega_evolutions;
     returnData.base_stats = mega.base_stats;
     if(mega.image_suffix) {
       returnData.image_suffix = mega.image_suffix;
+      returnData.suffix = mega.image_suffix.charAt(mega.image_suffix.length-1).toUpperCase();
     }else {
       returnData.image_suffix = 'mega';
     }
+    returnData.evolution_from = data.names.en;
+    returnData.prefix = "Mega";
     console.log(returnData)
     save(data.names.en).then(fillPokemon(returnData, allAbilities['MegaAbility']));
   }
