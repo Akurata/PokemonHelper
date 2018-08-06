@@ -209,7 +209,21 @@ img {
   float: left;
   width: 550px;
 }
-progress::-webkit-progress-value {background: black}
+
+
+progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+   appearance: none;
+}
+progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+progress::-webkit-progress-value {
+  transition: 0.5s ease-out;
+}
 
 #stats progress {
   float: right;

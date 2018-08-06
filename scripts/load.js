@@ -40,9 +40,9 @@ var data = {};
 var allAbilities;
 
 function getInfo(name) {
-  wait.start();
+  //wait.start();
   document.getElementById("pokemon_input").value = name;
-  clearChildren(document.getElementById("dropdown"));
+  //clearChildren(document.getElementById("dropdown"));
 
   fetch('/pokemon/' + name, {
     headers: {
@@ -68,7 +68,7 @@ function getInfo(name) {
       console.log(data);
       fillPokemon(this.data, allAbilities['Ability']);
     }).then(() => {
-      wait.stop();
+      //wait.stop();
     }).catch((err) => {
       save(name).then(() => {
         console.log(err)
@@ -120,38 +120,38 @@ function fillPokemon(data, ability) {
 
 function fill(element, title, data, type, label, variation) {
   var field = "<strong>" + title + ": </strong>";
-  if(data !== null && data.length != 0) {
-    if(type == 'mainicon') {
-      field += mainicon(data);
-      element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
-    }
-
-    if(type == 'icon') {
-      field += icon(data);
-      element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
-    }
-
-    if(type == 'sublabel') {
-      if(!variation) {
-        variation = "";
+  if(data) {
+    if(data !== null && data.length != 0) {
+      if(type == 'mainicon') {
+        field += mainicon(data);
+        element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
       }
-      if(typeof(data) == "object") {
-        data.forEach((item, index) => {
-          field += "<span class=\"variant " + variation + "\">" + item[label] + "</span>";
-          if(index != data.length - 1) {
-            field += ", "
-          }
-        });
-        element.innerHTML = field;
-      }else if(typeof(data) == "string") {
-        field += "<span class=\"variant " + variation + "\">" + data + "</span>";
-        element.innerHTML = field;
-      }else {
-        element.innerHTML = "";
+
+      if(type == 'icon') {
+        field += icon(data);
+        element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
       }
+
+      if(type == 'sublabel') {
+        if(!variation) {
+          variation = "";
+        }
+        if(Array.isArray(data)) {
+          data.forEach((item, index) => {
+            field += "<span class=\"variant " + variation + "\">" + item[label] + "</span>";
+            if(index != data.length - 1) {
+              field += ", "
+            }
+          });
+          element.innerHTML = field;
+        }else {
+          field += "<span class=\"variant " + variation + "\">" + data + "</span>";
+          element.innerHTML = field;
+        }
+      }
+    }else {
+      element.innerHTML = ""
     }
-  }else {
-    element.innerHTML = ""
   }
 }
 
@@ -159,8 +159,7 @@ function fillVariant(list, name) {
   var returnData = JSON.parse(JSON.stringify(data));
 
   if(list[1] == "form") {
-    var variant = data.variations[data.variations.map((e) => {return e.names.en}).indexOf(toProper(name))];
-    console.log(variant)
+    var variant = data.variations[data.variations.map((e) => {return e.image_suffix}).indexOf(name)];
     //returnData.names.en = toProper(name);
     returnData.types = variant.types;
     if(variant.abilities) {
@@ -170,13 +169,13 @@ function fillVariant(list, name) {
     returnData.mega_evolutions = [];
     returnData.base_stats = variant.base_stats;
     returnData.image_suffix = variant.image_suffix;
-    //console.log(returnData);
+    //console.log(variant);
     save(this.data.names.en).then(fillPokemon(returnData, allAbilities.Ability));
   }else if(list[1] == "evolution") { //It's an evolution
     save(toProper(name)).then(getInfo(toProper(name)));
   }else { //It's gotta be a mega
     var mega = data.mega_evolutions[data.mega_evolutions.map((e) => {return e.mega_stone}).indexOf(toProper(name))];
-
+    console.log(data.names.en)
     //returnData.names.en  = "Mega " + data.names.en;
     returnData.types = mega.types;
     returnData.abilities = mega.ability;
@@ -188,7 +187,7 @@ function fillVariant(list, name) {
     }else {
       returnData.image_suffix = 'mega';
     }
-    //console.log(returnData)
+    console.log(returnData)
     save(data.names.en).then(fillPokemon(returnData, allAbilities['MegaAbility']));
   }
 }
