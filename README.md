@@ -29,7 +29,7 @@ Feature TODOs:
   - Clear input on back delivery to also clear the text-box.
   - Suggest list filtering to hard start at beginning index and use wildcards (Bulb%).
   - Check Pokemon sprites delivered for missing images.
-  - Config file
+  - Config file (npm package config settings):
     - Language
     - Sizing
     - Sprite type
@@ -39,6 +39,7 @@ Feature TODOs:
 
 General TODOs:
   - Adding regular form to variation menu/fix back functionality.
+  - Include evolution information and linking.
   - Content delivery manager:
     - Only send sprites and icons requested.
     - Only cache frequently used data.

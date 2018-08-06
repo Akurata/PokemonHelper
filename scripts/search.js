@@ -138,7 +138,6 @@ function toProper(s) {
 
 document.addEventListener('mousedown', (event) => {
   if(event.target.classList.value === "suggest") {
-    console.log("load new")
     save(event.target.innerHTML).then(getInfo(event.target.innerHTML));
   }
 

@@ -87,11 +87,13 @@ function fillPokemon(data, ability) {
   var body = document.getElementById("pokemon_display");
   var typing = typeCheck(data.types);
   setSprite(data);
-
   body.children[0].children[0].innerHTML = data.names.en;
 
   fill(body.children[0].children[2], "Variations", data.variations, 'sublabel', 'image_suffix', 'form');
   fill(body.children[0].children[3], "Mega Evolutions", data.mega_evolutions, 'sublabel', 'mega_stone');
+  fill(body.children[0].children[4].children[0], "Evolves To", data.evolutions, 'sublabel', 'to', 'evolution');
+  fill(body.children[0].children[4].children[1], "Evolves From", data.evolution_from, 'sublabel', 'evolution_from', 'evolution');
+
 
   fill(body.children[1], "Type", data.types, 'mainicon');
   fill(body.children[2], "Very Weak to (4x)", typing['4x'], 'icon');
@@ -118,32 +120,38 @@ function fillPokemon(data, ability) {
 
 function fill(element, title, data, type, label, variation) {
   var field = "<strong>" + title + ": </strong>";
-
-  if(type == 'mainicon') {
-    field += mainicon(data);
-    element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
-  }
-
-  if(type == 'icon') {
-    field += icon(data);
-    element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
-  }
-
-  if(type == 'sublabel') {
-    if(!variation) {
-      variation = "";
+  if(data !== null && data.length != 0) {
+    if(type == 'mainicon') {
+      field += mainicon(data);
+      element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
     }
-    if(data.length != 0) {
-      data.forEach((item, index) => {
-        field += "<span class=\"variant " + variation + "\">" + item.names.en + "</span>";
-        if(index != data.length - 1) {
-          field += ", "
-        }
-      });
-      element.innerHTML = field;
-    }else {
-      element.innerHTML = "";
+
+    if(type == 'icon') {
+      field += icon(data);
+      element.innerHTML = data.length != 0 ? element.innerHTML = field : element.innerHTML = "";
     }
+
+    if(type == 'sublabel') {
+      if(!variation) {
+        variation = "";
+      }
+      if(typeof(data) == "object") {
+        data.forEach((item, index) => {
+          field += "<span class=\"variant " + variation + "\">" + item[label] + "</span>";
+          if(index != data.length - 1) {
+            field += ", "
+          }
+        });
+        element.innerHTML = field;
+      }else if(typeof(data) == "string") {
+        field += "<span class=\"variant " + variation + "\">" + data + "</span>";
+        element.innerHTML = field;
+      }else {
+        element.innerHTML = "";
+      }
+    }
+  }else {
+    element.innerHTML = ""
   }
 }
 
@@ -164,6 +172,8 @@ function fillVariant(list, name) {
     returnData.image_suffix = variant.image_suffix;
     //console.log(returnData);
     save(this.data.names.en).then(fillPokemon(returnData, allAbilities.Ability));
+  }else if(list[1] == "evolution") { //It's an evolution
+    save(toProper(name)).then(getInfo(toProper(name)));
   }else { //It's gotta be a mega
     var mega = data.mega_evolutions[data.mega_evolutions.map((e) => {return e.mega_stone}).indexOf(toProper(name))];
 
