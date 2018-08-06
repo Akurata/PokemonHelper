@@ -20,14 +20,12 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Akurata/PokemonHelper.git"
-  },
-  "scripts": {
-    "start": "node /app/app.js"
   },
   "author": "Alex Kurata",
   "license": "ISC"

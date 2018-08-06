@@ -17,13 +17,13 @@ var htmlParser = require('node-html-parser')
 var pokedex = require('oakdex-pokedex');
 //var sprites = require('oakdex-pokedex-sprites');
 
-app.use(favicon(path.resolve('../images/favicon.ico')));
-app.use(express.static(path.resolve('../')));
+app.use(favicon(path.resolve('./images/favicon.ico')));
+app.use(express.static(path.resolve('./')));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 
-var typeChart = fs.readFile('types_test.json', 'utf-8', (err, data) => {
+var typeChart = fs.readFile('./app/types_test.json', 'utf-8', (err, data) => {
   if(err) throw err;
   typeChart = JSON.parse(data);
 });
@@ -40,14 +40,14 @@ pokedex.findAbility("Contrary", (data) => {});
 app.get('/data-update', (req, res) => {
   var obj = {};
   console.log("start read")
-  fs.readFile(path.resolve('../node_modules/oakdex-pokedex/data/pokemon.json'), 'utf-8', (err, data) => {
+  fs.readFile(path.resolve('./node_modules/oakdex-pokedex/data/pokemon.json'), 'utf-8', (err, data) => {
     obj = JSON.parse(data);
 
     console.log("start write")
 
-    fs.writeFile(path.resolve('../node_modules/oakdex-pokedex/data/pokemon.json'), JSON.stringify(obj), (err) => {
+    fs.writeFile(path.resolve('./node_modules/oakdex-pokedex/data/pokemon.json'), JSON.stringify(obj), (err) => {
       if(err) throw err;
-      res.sendFile(path.resolve('../node_modules/oakdex-pokedex/data/pokemon.json'));
+      res.sendFile(path.resolve('./node_modules/oakdex-pokedex/data/pokemon.json'));
       console.log("done")
     })
   })
@@ -56,7 +56,7 @@ app.get('/data-update', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve('../view/index.html'));
+  res.sendFile(path.resolve('view/index.html'));
 });
 
 app.get('/names', (req, res) => {

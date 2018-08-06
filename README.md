@@ -38,8 +38,11 @@ Feature TODOs:
   - Background image/coloring
 
 General TODOs:
-  - Content delivery manager
+  - Adding regular form to variation menu/fix back functionality.
+  - Content delivery manager:
     - Only send sprites and icons requested.
     - Only cache frequently used data.
+    - Progressive content loader.
+    - Ability/General Data regulation manager.
   - Migrate some client side JS to server.
   - Performance metrics.
