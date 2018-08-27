@@ -191,7 +191,7 @@ function fillVariant(list, name) {
     returnData.types = mega.types;
     returnData.abilities = mega.ability;
     returnData.variations = [];
-    returnData.mega_evolutions = [];//data.mega_evolutions;
+    returnData.mega_evolutions = data.mega_evolutions;
     returnData.base_stats = mega.base_stats;
     if(mega.image_suffix) {
       returnData.image_suffix = mega.image_suffix;
