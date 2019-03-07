@@ -54,10 +54,14 @@ function getInfo(name) {
     res.json().then((data) => {
       var cookieStr = decodeURIComponent(document.cookie).replace(/; /g, ",\"");
       //Parse cookie in firefox
-      if(typeof InstallTrigger !== 'undefined') cookieStr = cookieStr.substring(cookieStr.indexOf(",") + 1).replace(/=j/ig, "\"");
+      if(typeof InstallTrigger !== 'undefined') cookieStr = "\"" + cookieStr.replace(/=j/ig, "\"");
       //Parse cookie in chrome
       if(!!window.chrome && !!window.chrome.webstore) cookieStr = "\"" + cookieStr.replace(/=j/ig, "\"");
+
+      console.log("{" + cookieStr + "}");
       allAbilities = JSON.parse("{" + cookieStr + "}");
+
+
       this.data = data;
       if(this.data.mega_evolutions.length != 0) {
         this.data.mega_evolutions.forEach((mega) => {
@@ -71,7 +75,7 @@ function getInfo(name) {
       //wait.stop();
     }).catch((err) => {
       save(name).then(() => {
-        console.log(err)
+        console.log(err);
         console.log("Cannot get: " + name);
         var error = document.createElement("strong");
         error.innerHTML = "Cannot get: " + name;
